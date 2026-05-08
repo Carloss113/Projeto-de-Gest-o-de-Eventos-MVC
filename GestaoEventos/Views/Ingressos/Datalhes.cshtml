@@ -1,0 +1,154 @@
+@model GestaoEventos.Models.Evento
+
+@{
+    ViewData["Title"] = Model.Titulo;
+    var ingressos = ViewBag.Ingressos as List<GestaoEventos.Models.Ingresso> ?? new();
+    var temDisponivel = ingressos.Any(i => i.Disponivel);
+}
+
+<div class="container mt-4">
+
+    @if (TempData["Erro"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-circle me-2"></i>@TempData["Erro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row g-4">
+
+        <!-- Imagem -->
+        <div class="col-md-6">
+            <img src="@Url.Content("~/img/eventos/" + (Model.ImagemUrl ?? "NoImage.png"))"
+                 class="img-fluid rounded-3 shadow w-100"
+                 style="max-height:420px; object-fit:cover;">
+        </div>
+
+        <!-- Informações + Compra -->
+        <div class="col-md-6 d-flex flex-column justify-content-between">
+            <div>
+                <span class="badge bg-primary mb-2">@Model.Categoria?.Nome</span>
+                <h2 class="fw-bold">@Model.Titulo</h2>
+
+                <ul class="list-unstyled mt-3 text-muted">
+                    <li class="mb-2">
+                        <i class="fas fa-calendar-day me-2 text-primary"></i>
+                        @Model.Data.ToString("dddd, dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("pt-BR"))
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-clock me-2 text-primary"></i>
+                        @Model.Data.ToString("HH:mm")h
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-map-marker-alt me-2 text-primary"></i>
+                        @Model.Local?.Nome
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card de compra -->
+            <div class="card border-0 shadow-sm mt-3">
+                <div class="card-body">
+
+                    @if (!ingressos.Any())
+                    {
+                        <div class="text-center py-3">
+                            <i class="fas fa-info-circle fa-2x text-muted mb-2"></i>
+                            <p class="text-muted mb-0">Nenhum ingresso cadastrado para este evento.</p>
+                        </div>
+                    }
+                    else if (!temDisponivel)
+                    {
+                        <div class="text-center py-3">
+                            <i class="fas fa-ticket-alt fa-2x text-muted mb-2"></i>
+                            <p class="fw-bold text-muted mb-0">Ingressos esgotados</p>
+                        </div>
+                    }
+                    else if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <form asp-controller="Ingressos" asp-action="AdicionarAoCarrinho" method="post">
+                            @Html.AntiForgeryToken()
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Tipo de Ingresso</label>
+                                <select name="ingressoId" id="selectIngresso" class="form-select">
+                                    @foreach (var ing in ingressos.Where(i => i.Disponivel))
+                                    {
+                                        <option value="@ing.Id"
+                                                data-preco="@ing.Preco.ToString("N2")"
+                                                data-max="@ing.QuantidadeRestante">
+                                            @ing.Tipo — R$ @ing.Preco.ToString("N2")
+                                            (@ing.QuantidadeRestante disponíveis)
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <small class="text-muted d-block">Valor unitário</small>
+                                    <span class="fs-5 fw-bold text-primary" id="precoExibido">
+                                        R$ @ingressos.First(i => i.Disponivel).Preco.ToString("N2")
+                                    </span>
+                                </div>
+                                <div style="width:110px;">
+                                    <label class="form-label fw-semibold mb-1 small">Quantidade</label>
+                                    <input type="number" name="quantidade" id="quantidade"
+                                           class="form-control text-center"
+                                           value="1" min="1"
+                                           max="@ingressos.First(i => i.Disponivel).QuantidadeRestante" />
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 rounded-pill">
+                                <i class="fas fa-cart-plus me-2"></i>Adicionar ao Carrinho
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="mb-3">
+                            @foreach (var ing in ingressos.Where(i => i.Disponivel))
+                            {
+                                <div class="d-flex justify-content-between py-2 border-bottom">
+                                    <span>@ing.Tipo</span>
+                                    <span class="fw-bold text-primary">R$ @ing.Preco.ToString("N2")</span>
+                                </div>
+                            }
+                        </div>
+                        <a asp-area="Identity" asp-page="/Account/Login"
+                           asp-route-returnUrl="/Ingressos/Detalhes/@Model.Id"
+                           class="btn btn-outline-primary w-100 rounded-pill">
+                            <i class="fas fa-sign-in-alt me-2"></i>Entre para comprar
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <a asp-controller="Home" asp-action="Index" class="text-muted small">
+                    <i class="fas fa-arrow-left me-1"></i>Voltar aos eventos
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const select = document.getElementById('selectIngresso');
+    const precoExibido = document.getElementById('precoExibido');
+    const qtdInput = document.getElementById('quantidade');
+
+    if (select) {
+        select.addEventListener('change', function () {
+            const opt = this.options[this.selectedIndex];
+            precoExibido.textContent = 'R$ ' + opt.dataset.preco;
+            qtdInput.max = opt.dataset.max;
+            if (parseInt(qtdInput.value) > parseInt(opt.dataset.max))
+                qtdInput.value = opt.dataset.max;
+        });
+    }
+</script>
+}

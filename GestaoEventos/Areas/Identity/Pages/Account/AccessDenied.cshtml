@@ -1,0 +1,35 @@
+﻿@page
+@model AccessDeniedModel
+
+@{
+    ViewData["Title"] = "Acesso Negado";
+}
+
+<div class="container" style="margin-top: 10vh;">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card shadow border-0 p-5">
+                <div class="mb-4">
+                    <i class="fa-solid fa-hand text-danger fa-5x"></i>
+                </div>
+                <h1 class="text-danger fw-bold">Acesso Restrito</h1>
+                <h4 class="text-muted mb-4">Opa! Você não tem permissão para acessar esta página.</h4>
+                
+                <p class="text-secondary mb-5">
+                    Esta área do sistema é destinada apenas a administradores. 
+                    Se você acredita que isso é um erro, entre em contato com o suporte técnico 
+                    ou tente fazer login com uma conta administrativa.
+                </p>
+
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg px-4 gap-3 rounded-pill shadow-sm">
+                        <i class="fa-solid fa-house me-2"></i>Voltar para o Início
+                    </a>
+                    <a href="javascript:history.back()" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">
+                        Voltar à página anterior
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+@model List<(Microsoft.AspNetCore.Identity.IdentityUser User, IList<string> Roles)>
+@inject Microsoft.AspNetCore.Identity.UserManager<Microsoft.AspNetCore.Identity.IdentityUser> UserManager
+
+@{
+    ViewData["Title"] = "Gerenciar Usuários";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-0"><i class="fas fa-users-cog me-2 text-primary"></i>Gerenciar Usuários</h2>
+        <small class="text-muted">Gerencie os papéis de acesso dos usuários do sistema</small>
+    </div>
+    <span class="badge bg-secondary fs-6">@Model.Count usuário(s)</span>
+</div>
+
+@if (TempData["Mensagem"] != null)
+{
+    <div id="toast" style="position:fixed; top:20px; right:20px; z-index:9999;
+                 display:flex; align-items:center; gap:10px;
+                 background:var(--bs-body-bg, #fff); border:1px solid #dee2e6;
+                 border-left: 4px solid @(TempData["TipoMensagem"]?.ToString() == "success" ? "#1D9E75" : "#BA7517");
+                 border-radius:8px; padding:12px 16px; min-width:280px; box-shadow:0 4px 12px rgba(0,0,0,.08);">
+        <span>@TempData["Mensagem"]</span>
+        <button onclick="document.getElementById('toast').remove()"
+                style="margin-left:auto; background:none; border:none; font-size:18px; cursor:pointer; color:#888;">
+            ×
+        </button>
+    </div>
+    <script>setTimeout(() => document.getElementById('toast')?.remove(), 3500)</script>
+}
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="ps-4"><i class="fas fa-envelope me-1 text-muted"></i> Email</th>
+                    <th><i class="fas fa-shield-alt me-1 text-muted"></i> Papel</th>
+                    <th class="text-end pe-4">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var isAdmin = item.Roles.Contains("Admin");
+                    var isDono = item.Roles.Contains("Dono");
+
+                    var isCurrentUser = item.User.Id == UserManager.GetUserId(User);
+
+                    <tr>
+                        <td class="ps-4 align-middle">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="rounded-circle bg-@(isAdmin ? "primary" : "secondary") text-white d-flex align-items-center justify-content-center"
+                                     style="width:36px; height:36px; font-size:14px; flex-shrink:0;">
+                                    @item.User.Email![0].ToString().ToUpper()
+                                </div>
+                                <span>@item.User.Email</span>
+                                @if (isCurrentUser)
+                                {
+                                    <span class="badge bg-light text-muted border">você</span>
+                                }
+                            </div>
+                        </td>
+                        <td class="align-middle">
+                            @if (isAdmin)
+                            {
+                                <span class="badge bg-primary">
+                                    <i class="fas fa-crown me-1"></i>Admin
+                                </span>
+                            } else if (isDono)
+                            {
+                                <span class="badge bg-primary">
+                                    <i class="fas fa-crown me-1"></i>Dono
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    <i class="fas fa-user me-1"></i>User
+                                </span>
+                            }
+                        </td>
+                        <td class="text-end pe-4 align-middle">
+                            @if (!isAdmin || !isDono)
+                            {
+                                <form asp-action="PromoverAdmin" asp-route-userId="@item.User.Id" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-arrow-up me-1"></i>Promover a Admin
+                                    </button>
+                                </form>
+                            }
+                            else if (!isCurrentUser)
+                            {
+                                <form asp-action="RebaixarUser" asp-route-userId="@item.User.Id" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-warning">
+                                        <i class="fas fa-arrow-down me-1"></i>Rebaixar para User
+                                    </button>
+                                </form>
+                            }
+                            else if (isDono)
+                            {
+                                <span class="text-muted small"><i class="fas fa-lock me-1"></i>Gestor da empresa</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted small"><i class="fas fa-lock me-1"></i>Conta atual</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

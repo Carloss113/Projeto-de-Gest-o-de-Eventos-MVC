@@ -1,0 +1,71 @@
+﻿@model GestaoEventos.Models.Evento
+
+<div class="row justify-content-center align-items-center">
+    <div class="col-md-5">
+        <div class="card shadow border-0 p-4">
+            <h4 class="mb-3 text-warning">
+                <i class="fa-solid fa-folder-plus me-2"></i> Editar Categoria
+            </h4>
+            <hr />
+
+            <form asp-action="Edit">
+                @* Importante: O Id estar aqui para o POST saber quem vai editar *@
+                <input type="hidden" asp-for="Id">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Titulo" class="form-control" placeholder="Título da Categoria"/>
+                    <label asp-for="Titulo"></label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Data" type="text" id="datepicker" class="form-control"
+                            value="@Model.Data.ToString("yyyy-MM-dd")" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-muted small">Categoria</label>
+                    <select asp-for="CategoriaId" class="form-select border-warning"
+                            asp-items="ViewBag.CategoriaId"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-muted small">Local</label>
+                    <select asp-for="LocalId" class="form-select border-warning"
+                            asp-items="ViewBag.LocalId"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-muted small d-block">Imagem Atual</label>
+                    @if (!string.IsNullOrEmpty(Model.ImagemUrl))
+                    {
+                        <img src="~/img/eventos/@Model.ImagemUrl" class="rounded mb-2 shadow-sm" style="width: 100px; height: 60px; object-fit: cover;"/> 
+                    }
+                    <input type="file" class="form-control" accept="image/*"/>
+                    <small class="text-muted">Selecione uma nova foto apenas se desejar alterar a foto atual </small>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success py-2 shadow-sm">
+                        <i class="fa-solid fa-check me-1"></i> Salvar Alterações
+                    </button>
+                    <a asp-action="Index" class="btn btn-link text-muted">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>    
+</div>
+
+@section Scripts {
+    <script>
+        flatpickr("#datepicker", {
+            "locale": "pt",
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "d/m/Y",
+            // Força o calendário a iniciar na data que veio do banco
+            defaultDate: "@Model.Data.ToString("yyyy-MM-dd")"
+        });
+    </script>
+}

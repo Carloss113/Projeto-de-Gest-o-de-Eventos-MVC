@@ -1,0 +1,383 @@
+/* 1. Garante que o corpo da página tenha espaço para o rodapé */
+body {
+    margin-bottom: 150px; /* Aumentamos a margem para caber o rodapé com folga */
+}
+
+/* 2. Ajuste do Rodapé para não ficar por cima de ninguém */
+/*.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;*/ /* Altura fixa do rodapé */
+    /*line-height: 60px;
+    background-color: #fff;*/ /* Fundo sólido para não ser transparente */
+    /*border-top: 1px solid #dee2e6;
+}*/
+
+/* 3. Respiro extra para os cards não encostarem na borda inferior */
+main.pb-3 {
+    padding-bottom: 50px !important;
+}
+
+/* Ajuste específico para os cards não colarem no rodapé */
+/*.container.pb-5 {
+    padding-bottom: 5rem !important;
+}*/
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+/* --- CONFIGURAÇÕES GERAIS DO PROJETO --- */
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #f8f9fa;
+}
+
+/* --- CARROSSEL HOME --- */
+.carousel-eventos-container {
+    height: 350px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #eee;
+}
+
+.carousel-img-fix {
+    width: 100%;
+    height: 350px;
+    object-fit: contain;
+    display: block;
+    padding: 20px;
+}
+
+/*.overlay-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+    z-index: 1;
+}*/
+
+/* --- CARDS DOS EVENTOS (O QUE TINHA SUMIDO) --- */
+.card-img-container {
+    height: 160px; /* Altura fixa para o card não ficar gigante */
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #f0f0f0;
+    overflow: hidden;
+}
+
+.card-img-zoom {
+    max-height: 100%;
+    max-width: 100%;
+    /* object-validation: contain; Garante a imagem inteira no card */
+    transition: transform 0.3s ease;
+    padding: 10px;
+}
+
+.hover-shadow {
+    transition: all 0.3s ease;
+}
+
+.hover-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+}
+
+.hover-shadow:hover .card-img-zoom {
+    transform: scale(1.05);
+}
+
+.card-title {
+    font-size: 1.1rem;
+    height: 2.4em; /* Reserva espaço para 2 linhas de título */
+    overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════
+   GestaoEventos — site.css
+   ═══════════════════════════════════════════════ */
+
+/* ── Base ── */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f8f9fa;
+}
+
+/* ══════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════ */
+.navbar-main {
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    padding: 0.6rem 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+
+.navbar-brand-logo {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #2c3e50 !important;
+    letter-spacing: -0.5px;
+}
+
+    .navbar-brand-logo span {
+        color: #18bc9c;
+    }
+
+.nav-link-custom {
+    color: #555 !important;
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 0.4rem 0.75rem !important;
+    border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+}
+
+    .nav-link-custom:hover {
+        background: #f0f9f6;
+        color: #18bc9c !important;
+    }
+
+    .nav-link-custom.active {
+        color: #18bc9c !important;
+        font-weight: 600;
+    }
+
+.nav-link-admin {
+    color: #888 !important;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.3rem 0.6rem !important;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+
+    .nav-link-admin:hover {
+        background: #fff3f3;
+        color: #e74c3c !important;
+    }
+
+.nav-divider {
+    width: 1px;
+    background: #eee;
+    margin: 0 8px;
+    height: 20px;
+    align-self: center;
+}
+
+/* ══════════════════════════════════════════════
+   CARRINHO
+══════════════════════════════════════════════ */
+.btn-carrinho {
+    position: relative;
+    background: #f0f9f6;
+    border: 1px solid #d4f0e8;
+    border-radius: 10px;
+    padding: 6px 12px;
+    color: #18bc9c;
+    font-size: 1rem;
+    transition: all 0.15s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+    .btn-carrinho:hover {
+        background: #18bc9c;
+        color: #fff;
+        border-color: #18bc9c;
+    }
+
+    .btn-carrinho .badge-count {
+        background: #e74c3c;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 20px;
+        padding: 1px 6px;
+        min-width: 18px;
+        text-align: center;
+    }
+
+/* ══════════════════════════════════════════════
+   BOTÕES LOGIN / CADASTRO
+══════════════════════════════════════════════ */
+.btn-login {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 8px;
+}
+
+/* ══════════════════════════════════════════════
+   AVATAR / PILL DO USUÁRIO
+══════════════════════════════════════════════ */
+.user-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    border-radius: 20px;
+    padding: 4px 12px 4px 4px;
+    font-size: 0.82rem;
+    color: #555;
+}
+
+.user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #18bc9c;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+.footer-main {
+    background: #2c3e50;
+    color: #aaa;
+    padding: 2rem 0 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: -4rem;
+    /*font-size: 0.85rem;*/
+}
+
+    .footer-main a {
+        color: #18bc9c;
+        text-decoration: none;
+    }
+
+        .footer-main a:hover {
+            color: #fff;
+        }
+
+.footer-brand {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+    .footer-brand span {
+        color: #18bc9c;
+    }
+
+/* ══════════════════════════════════════════════
+   CARROSSEL DE EVENTOS
+══════════════════════════════════════════════ */
+.carousel-eventos-container {
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel-img-fix {
+    height: 400px;
+    object-fit: cover;
+}
+
+.overlay-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+    z-index: 1;
+}
+
+.carousel-caption {
+    z-index: 2;
+}
+
+/* ══════════════════════════════════════════════
+   CARDS DE EVENTO
+══════════════════════════════════════════════ */
+.card-img-container {
+    height: 180px;
+    overflow: hidden;
+}
+
+.card-img-zoom {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.hover-shadow {
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+    .hover-shadow:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,.12) !important;
+        transform: translateY(-3px);
+    }
+
+        .hover-shadow:hover .card-img-zoom {
+            transform: scale(1.06);
+        }
+
+/* Remove sublinhado dos links da navbar */
+.nav-link-custom,
+.nav-link-admin {
+    text-decoration: none !important;
+}
+
+/* Garante que o conteúdo empurre o footer para baixo */
+main {
+    min-height: calc(100vh - 220px);
+}
+
+/* Centraliza os cards de formulário */
+.card[style*="max-width"] {
+    margin-left: auto;
+    margin-right: auto;
+}

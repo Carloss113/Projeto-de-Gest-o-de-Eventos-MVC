@@ -1,0 +1,107 @@
+@model List<GestaoEventos.Models.CarrinhoItem>
+
+@{
+    ViewData["Title"] = "Checkout";
+    var total = ViewBag.Total as decimal? ?? 0;
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold mb-4"><i class="fas fa-credit-card me-2 text-primary"></i>Checkout</h2>
+
+    <div class="row g-4">
+
+        <!-- Formulário de pagamento simulado -->
+        <div class="col-md-7">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-1">Dados de Pagamento</h5>
+                    <p class="text-muted small mb-4">
+                        <i class="fas fa-lock me-1"></i>Ambiente simulado — nenhum dado real é processado.
+                    </p>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nome no cartão</label>
+                        <input type="text" class="form-control" placeholder="João da Silva" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Número do cartão</label>
+                        <input type="text" class="form-control" id="numeroCartao"
+                               placeholder="0000 0000 0000 0000" maxlength="19" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">Validade</label>
+                            <input type="text" class="form-control" id="validade"
+                                   placeholder="MM/AA" maxlength="5" />
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label fw-semibold">CVV</label>
+                            <input type="text" class="form-control" placeholder="123" maxlength="3" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Parcelas</label>
+                        <select class="form-select">
+                            <option>1x de R$ @total.ToString("N2") (sem juros)</option>
+                            <option>2x de R$ @((total / 2).ToString("N2")) (sem juros)</option>
+                            <option>3x de R$ @((total / 3).ToString("N2")) (sem juros)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumo final -->
+        <div class="col-md-5">
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Resumo</h5>
+
+                    @foreach (var item in Model)
+                    {
+                        <div class="d-flex justify-content-between small mb-2">
+                            <div>
+                                <span class="fw-semibold">@item.TituloEvento</span><br />
+                                <span class="text-muted">@item.TipoIngresso — @item.Quantidade ingresso(s)</span>
+                            </div>
+                            <span class="fw-bold">R$ @item.Subtotal.ToString("N2")</span>
+                        </div>
+                    }
+
+                    <hr />
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Total</span>
+                        <span class="text-primary">R$ @total.ToString("N2")</span>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-action="FinalizarCompra" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-success w-100 rounded-pill py-2 fw-bold">
+                    <i class="fas fa-check-circle me-2"></i>Confirmar Pagamento
+                </button>
+            </form>
+            <a asp-action="Carrinho" class="btn btn-outline-secondary w-100 rounded-pill mt-2">
+                <i class="fas fa-arrow-left me-2"></i>Voltar ao Carrinho
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    document.getElementById('numeroCartao').addEventListener('input', function (e) {
+        let v = e.target.value.replace(/\D/g, '').substring(0, 16);
+        e.target.value = v.replace(/(.{4})/g, '$1 ').trim();
+    });
+    document.getElementById('validade').addEventListener('input', function (e) {
+        let v = e.target.value.replace(/\D/g, '').substring(0, 4);
+        if (v.length >= 3) v = v.substring(0, 2) + '/' + v.substring(2);
+        e.target.value = v;
+    });
+</script>
+}

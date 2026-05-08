@@ -1,0 +1,76 @@
+﻿@model IEnumerable<GestaoEventos.Models.Evento>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary"><i class="fa-solid fa-calendar-days me-2"></i>Próximos Eventos</h2>
+     @if (User.IsInRole("Admin")){
+        <a asp-action="Create" class="btn btn-success shadow-sm">
+            <i class="fa-solid fa-plus me-1"></i> Novo Evento
+        </a>
+    }
+</div>
+
+<div class="card shadow border-0">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th class="ps-4">Imagem do Evento</th>
+                    <th class="ps-4">Título</th>
+                    <th>Data</th>
+                    <th>Categoria</th>
+                    <th>Local</th>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Gerente"))
+                    {
+                        <th class="text-center" style="width: 200px;">Ações</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle text-center" style="width: 240px;">
+                            <div class="d-flex justify-content-center align-items-center">
+                                @if (!string.IsNullOrEmpty(item.ImagemUrl))
+                                {
+                                    <img src="@Url.Content("~/img/eventos/" + item.ImagemUrl)" class="rounded shadow-sm border"
+                                         style="width: 80px; height: 50px; object-fit: cover;" alt="Foto do Evento" />
+                                }
+                                else
+                                {
+                                    <div class="bg-light rounded d-flex align-items-center justify-content-center shadow-sm"
+                                         style="width: 80px; height: 50px; border: 1px dashed #dee2e6;">
+                                        <i class="fa-solid fa-image text-muted" style="font-size: 1.2rem;"></i>
+                                    </div>
+                                }
+                            </div>
+                        </td>
+                        <td class="align-middle fw-bold ps-4">@item.Titulo</td>
+                        <td class="align-middle">@item.Data.ToShortDateString()</td>
+                        <td class="align-middle">
+                            <span class="badge bg-info text-white shadow-sm">
+                                <i class="fa-solid fa-tag me-1"></i> @item.Categoria?.Nome
+                            </span>
+                        </td>
+                        <td class="align-middle">
+                            <span class="badge bg-info text-white shadow-sm">
+                                <i class="fa-solid fa-tag me-1"></i> @item.Local?.Nome
+                            </span>
+                        </td>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Gerente"))
+                        {
+                            <td class="text-center align-middle">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning shadow-sm me-1">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger shadow-sm">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </td>
+                        }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>

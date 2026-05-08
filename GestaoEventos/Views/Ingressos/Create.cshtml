@@ -1,0 +1,28 @@
+@model GestaoEventos.Models.Ingresso
+@{
+    ViewData["Title"] = "Novo Ingresso";
+}
+<h2 class="mb-4 text-center"><i class="fas fa-ticket-alt me-2 text-primary"></i>Novo Ingresso</h2>
+<div class="card shadow-sm" style="max-width:500px">
+    <div class="card-body">
+        <form asp-action="Create">
+            @Html.AntiForgeryToken()
+            <div class="mb-3"><label class="form-label fw-semibold">Evento</label><select asp-for="EventoId"
+                                                                                          asp-items="ViewBag.EventoId" class="form-select">
+                <option value="">Selecione...</option>
+            </select><span asp-validation-for="EventoId" class="text-danger small"></span></div>
+            <div class="mb-3"><label asp-for="Tipo" class="form-label fw-semibold"></label><select asp-for="Tipo"
+                                                                                                       asp-items="Html.GetEnumSelectList<GestaoEventos.Models.TipoIngresso>()"
+                                                                                                       class="form-select"></select></div>
+                <div class="mb-3"><label asp-for="Preco" class="form-label fw-semibold"></label><input asp-for="Preco"
+                                                                                                           class="form-control" /><span asp-validation-for="Preco" class="text-danger small"></span></div>
+                    <div class="mb-3"><label asp-for="QuantidadeDisponivel" class="form-label fw-semibold"></label><input
+                        asp-for="QuantidadeDisponivel" class="form-control" /><span
+                        asp-validation-for="QuantidadeDisponivel" class="text-danger small"></span></div>
+                        <div class="mb-3 form-check"><input asp-for="Ativo" class="form-check-input" /><label asp-for="Ativo"
+                                                                                                                  class="form-check-label">Ativo</label></div>
+                            <button type="submit" class="btn btn-primary rounded-pill me-2">Salvar</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill">Cancelar</a>
+                        </form>
+                    </div>
+                </div>

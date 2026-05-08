@@ -1,0 +1,53 @@
+﻿@model IEnumerable<GestaoEventos.Models.Evento>
+@{
+    var eventosCarrossel = Model.Take(3).ToList();
+}
+<div class="container mt-4">
+    @if (eventosCarrossel.Any())
+    {
+        <div id="carouselEventos" class="carousel slide shadow carousel-eventos-container mb-5" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @for (int i = 0; i < eventosCarrossel.Count; i++)
+                {
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <div class="overlay-gradient"></div>
+                        <img src="@Url.Content("~/img/eventos/" + (eventosCarrossel[i].ImagemUrl ?? "NoImage.png"))"
+                             class="d-block w-100 carousel-img-fix">
+                        <div class="carousel-caption text-start mb-3" style="z-index: 2;">
+                            <span class="badge bg-primary mb-2">@eventosCarrossel[i].Categoria?.Nome</span>
+                            <h2 class="fw-bold">@eventosCarrossel[i].Titulo</h2>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselEventos" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselEventos" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    }
+    <h3 class="text-center fw-bold mb-4">Próximos Eventos na Etec</h3>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 hover-shadow overflow-hidden">
+                    <div class="card-img-container">
+                        <img src="@Url.Content("~/img/eventos/" + (item.ImagemUrl ?? "NoImage.png"))" class="card-img-zoom">
+                    </div>
+                    <div class="card-body">
+                        <span class="text-primary small fw-bold">@item.Categoria?.Nome</span>
+                        <h5 class="card-title fw-bold">@item.Titulo</h5>
+                        <p class="text-muted small"><i class="fa-solid fa-calendar-day me-2"></i>@item.Data.ToShortDateString()</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 pb-3">
+                        <a asp-controller="Ingressos" asp-action="Detalhes" asp-route-id="@item.Id"
+                           class="btn btn-outline-primary btn-sm w-100 rounded-pill">Ver Detalhes</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

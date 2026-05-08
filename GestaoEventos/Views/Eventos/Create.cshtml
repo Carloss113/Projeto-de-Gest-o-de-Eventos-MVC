@@ -1,0 +1,62 @@
+﻿@model GestaoEventos.Models.Evento
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow border-0 p-4">
+            <h4 class="mb-3 text-primary"><i class="fa-solid fa-calendar-plus me-2"></i>Novo Evento</h4>
+            <hr />
+            <form asp-action="Create" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Titulo" class="form-control" placeholder="Título" />
+                    <label asp-for="Titulo"></label>
+                    <span asp-validation-for="Titulo" class="text-danger small"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Data" type="text" id="datepicker" class="form-control" placeholder="Selecione a data" />
+                    <label asp-for="Data">Data do Evento</label>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-muted small">Categoria do Evento</label>
+                    <select asp-for="CategoriaId" class="form-select border-primary" asp-items="ViewBag.CategoriaId">
+                        <option value="">-- Selecione uma Categoria --</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-muted small">Local do Evento</label> <select asp-for="LocalId" class="form-select border-primary" asp-items="ViewBag.LocalId">
+                    <option value="">-- Selecione um Local --</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ImagemUrl" class="control-label"></label>
+                <input type="file" name="imagem" class="form-control" accept="image/*" />
+                <span asp-validation-for="ImagemUrl" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary py-2 shadow-sm">
+                    Salvar Evento
+                </button>
+                <a asp-action="Index" class="btn btn-link text-muted">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+    <script>
+        flatpickr("#datepicker", {
+            "locale": "pt",
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "d/m/Y",
+            minDate: "today"
+        });
+    </script>
+}

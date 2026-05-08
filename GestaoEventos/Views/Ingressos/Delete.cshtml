@@ -1,0 +1,19 @@
+@model GestaoEventos.Models.Ingresso
+@{
+    ViewData["Title"] = "Excluir Ingresso";
+}
+
+<h2 class="mb-4 text-danger"><i class="fas fa-solid fa-trash me-2"> Excluir Ingresso </i></h2>
+
+<div class="card shadow-sm" style="max-width:500px">
+    <div class="card-body">
+        <p>Deseja excluir o ingresso <strong>@Model.Tipo</strong> do Evento <strong>@Model.Evento?.Titulo</strong> ? </p>
+
+        <form asp-action="Delete">
+            @Html.AntiForgeryToken()
+            <input type="hydden" asp-for="Id">
+            <button type="submit" class="btn btn-danger rounded-pill me-2">Excluir</button>
+            <a asp-action="Index" class="btn btn-outline-secondary rounded-pill">Cancelar</a>
+        </form> 
+    </div>
+</div>

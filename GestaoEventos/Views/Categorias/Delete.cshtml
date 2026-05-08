@@ -1,0 +1,20 @@
+﻿@model GestaoEventos.Models.Categoria
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow border-0 p-4">
+            <h4 class="text-danger mb-3"> <i class="fa-solid fa-triangle-exclamation me-2"></i> Excluir Categoria? </h4>
+            <p>Tem certeza que deseja remover a categoria <strong> @Model.Nome</strong>?</p>
+            <p class="text-muted small"> Aviso: Isso pode afetar outros eventos </p>
+            <hr/>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id">
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-danger py-2"> Confirmar Exclusão</button>
+                    <a asp-action="Index" class="btn btn-link text-muted"> Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
